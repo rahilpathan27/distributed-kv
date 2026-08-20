@@ -1,0 +1,81 @@
+version: '3.8'
+
+services:
+  leader:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: dkv-leader
+    ports:
+      - "7070:7070"
+      - "7071:7071"
+    volumes:
+      - leader-data:/data
+    command: >
+      --port 7070
+      --repl-port 7071
+      --data-dir /data
+      --role leader
+      --node-id leader
+    healthcheck:
+      test: ["CMD", "sh", "-c", "echo PING | nc -w1 localhost 7070 | grep PONG"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+    networks:
+      - dkv-net
+
+  follower1:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: dkv-follower1
+    ports:
+      - "7080:7070"
+      - "7081:7071"
+    volumes:
+      - follower1-data:/data
+    command: >
+      --port 7070
+      --repl-port 7071
+      --data-dir /data
+      --role follower
+      --node-id follower1
+      --leader-addr leader:7071
+    depends_on:
+      leader:
+        condition: service_healthy
+    networks:
+      - dkv-net
+
+  follower2:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: dkv-follower2
+    ports:
+      - "7090:7070"
+      - "7091:7071"
+    volumes:
+      - follower2-data:/data
+    command: >
+      --port 7070
+      --repl-port 7071
+      --data-dir /data
+      --role follower
+      --node-id follower2
+      --leader-addr leader:7071
+    depends_on:
+      leader:
+        condition: service_healthy
+    networks:
+      - dkv-net
+
+volumes:
+  leader-data:
+  follower1-data:
+  follower2-data:
+
+networks:
+  dkv-net:
+    driver: bridge
