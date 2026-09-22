@@ -1,32 +1,11 @@
-# Binaries
-bin/
-*.exe
-*.exe~
-*.dll
-*.so
-*.dylib
-
-# Test binary, built with `go test -c`
-*.test
-
-# Output of the go coverage tool
-coverage.out
-coverage.html
-
-# Data directories (WAL files, etc.)
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+build/
+dist/
+*.egg-info/
 data/
-
-# IDE
-.idea/
-.vscode/
-*.swp
-*.swo
-*~
-
-# OS
 .DS_Store
-Thumbs.db
-
-# Go workspace
-go.work
-go.work.sum
+.venv/
+.env

@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "raft-kv"
+version = "1.0.0"
+description = "A durable distributed key-value store using Raft consensus"
+requires-python = ">=3.11"
+readme = "README.md"
+license = {text = "MIT"}
+keywords = ["raft", "consensus", "distributed-systems", "key-value-store", "python"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+]
+
+[project.scripts]
+dkv-server = "dkv.cli:main"
+dkv-client = "dkv.client:main"
+
+[tool.setuptools]
+packages = ["dkv"]
